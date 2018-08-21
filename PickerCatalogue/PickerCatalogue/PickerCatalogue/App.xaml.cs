@@ -1,3 +1,4 @@
+using PickerCatalogue.Views;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -11,7 +12,7 @@ namespace PickerCatalogue
 		{
 			InitializeComponent();
 
-			MainPage = new MainPage();
+			MainPage = new NavigationPage(new PickerView());
 		}
 
 		protected override void OnStart ()
