@@ -23,7 +23,19 @@ namespace PickerCatalogue.ViewModels
         public ICommand NextPage { get; set; }
         public ICommand GoToCarrito { get; set; }
 
-        public ObservableCollection<GuitarModel> CarritoModels { get; set; }
+        private ObservableCollection<GuitarModel> _carritoModels { get; set; }
+        public ObservableCollection<GuitarModel> CarritoModels
+        {
+            set
+            {
+                _carritoModels = value;
+                OnPropertyChanged("CarritoModels");
+            }
+            get
+            {
+                return _carritoModels;
+            }
+        }
 
         private ObservableCollection<Brand> _brandsToShow { get; set; }
         public ObservableCollection<Brand> BrandsToShow
@@ -70,34 +82,6 @@ namespace PickerCatalogue.ViewModels
             }
         }
 
-        //private ObservableCollection<CarouselImage> _ItemsList;
-        //public ObservableCollection<CarouselImage> ItemsList
-        //{
-        //    set
-        //    {
-        //        _ItemsList = value;
-        //        OnPropertyChanged("ItemsList");
-        //    }
-        //    get
-        //    {
-        //        return _ItemsList;
-        //    }
-        //}
-
-        //public CarouselViewControl _myCarousel { get; set; }
-        //public CarouselViewControl MyCarousel
-        //{
-        //    set
-        //    {
-        //        _myCarousel = value;
-        //        RaisePropertyChanged("MyCarousel");
-        //    }
-        //    get
-        //    {
-        //        return _myCarousel;
-        //    }
-        //}
-
         private string _visible { get; set; }
         public string Visible
         {
@@ -114,42 +98,30 @@ namespace PickerCatalogue.ViewModels
 
         private INavigation Navigation { get; set; }
 
-        public PickerViewModel(INavigation _navigation)
+        public PickerViewModel(INavigation _navigation, ObservableCollection<GuitarModel> _carritoModels)
         {
             Navigation = _navigation;
 
             ModelSelected = new GuitarModel();
+            CarritoModels = _carritoModels;
 
             Visible = "False";
             InitializeBrandsAndModels();
 
             NextPage = new Command(async () => await ExecuteNextPage());
-            //GoToCarrito = new Command(async () => await ExecuteGoToCarrito());
+            GoToCarrito = new Command(async () => await ExecuteGoToCarrito());
         }
 
-        //private async Task ExecuteGoToCarrito()
-        //{
-        //}
+        private async Task ExecuteGoToCarrito()
+        {
+            await Navigation.PushAsync(new CarritoView(Navigation, CarritoModels));
+        }
 
         private async Task ExecuteNextPage()
         {
-            await Navigation.PushAsync(new ShowGuitarModelView(ModelSelected, Navigation));
+            await Navigation.PushAsync(new ShowGuitarModelView(Navigation, ModelSelected, CarritoModels));
         }
 
-        //public void ExecuteCarouselView()
-        //{
-        //    _myCarousel = new CarouselViewControl();
-
-        //    var _ItemsList = new ObservableCollection<CarouselImage>
-        //    {
-        //        new CarouselImage(){ Id=0, Image="ares.png" },
-        //        new CarouselImage(){ Id=1, Image="athena.png" },
-        //    };
-
-        //    _myCarousel.ItemsSource = _ItemsList;
-        //}
-
-        //
         private void InitializeBrandsAndModels()
         {
             var EpiSG = new GuitarModel()

@@ -3,15 +3,16 @@ using Xamarin.Forms.Xaml;
 using Xamarin.Forms;
 using PickerCatalogue.Models;
 using CarouselView.FormsPlugin.Abstractions;
+using System.Collections.ObjectModel;
 
 namespace PickerCatalogue.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ShowGuitarModelView : ContentPage
 	{
-		public ShowGuitarModelView (GuitarModel guit, INavigation Navigation)
+		public ShowGuitarModelView (INavigation _navigation, GuitarModel _modelSelected, ObservableCollection<GuitarModel> _carritoModels)
 		{
-            BindingContext = new ShowGuitarModelViewModel(guit, Navigation);
+            BindingContext = new ShowGuitarModelViewModel(_navigation, _modelSelected, _carritoModels);
 
             InitializeComponent();
 		}

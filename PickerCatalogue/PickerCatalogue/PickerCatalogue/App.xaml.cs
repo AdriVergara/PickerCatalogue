@@ -1,5 +1,7 @@
+using PickerCatalogue.Models;
 using PickerCatalogue.Views;
 using System;
+using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -8,11 +10,13 @@ namespace PickerCatalogue
 {
 	public partial class App : Application
 	{
-		public App ()
+        //public INavigation Navigation { get; set; }
+
+        public App ()
 		{
 			InitializeComponent();
 
-			MainPage = new NavigationPage(new PickerView());
+			MainPage = new NavigationPage(new PickerView(new ObservableCollection<GuitarModel>()));
 		}
 
 		protected override void OnStart ()

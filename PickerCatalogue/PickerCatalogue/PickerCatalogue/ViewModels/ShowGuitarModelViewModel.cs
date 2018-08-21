@@ -1,6 +1,7 @@
 ﻿using CarouselView.FormsPlugin.Abstractions;
 using PickerCatalogue.Model;
 using PickerCatalogue.Models;
+using PickerCatalogue.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -86,10 +87,11 @@ namespace PickerCatalogue.ViewModels
 
         public INavigation Navigation { get; set; }
 
-        public ShowGuitarModelViewModel(GuitarModel _selectedModel, INavigation _navigation)
+        public ShowGuitarModelViewModel(INavigation _navigation, GuitarModel _selectedModel, ObservableCollection<GuitarModel> _carritoModels)
         {
-            ModelSelected = _selectedModel;
             Navigation = _navigation;
+            ModelSelected = _selectedModel;
+            CarritoModels = _carritoModels;
 
             _myCarousel = new CarouselViewControl();
             _ItemsList = ModelSelected.ImagesCollection;
@@ -105,7 +107,7 @@ namespace PickerCatalogue.ViewModels
             //Dto.CarritoModels.Add(ModelSelected);
             //await _navigationService.Navigate<EnumerablePickerViewModel, DTO>(Dto);
 
-            Navigation.PushAsync(new PickerViewModel());
+            await Navigation.PushAsync(new PickerView(CarritoModels));
         }
 
         //public override void Prepare(DTO parameter)
