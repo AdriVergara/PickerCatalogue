@@ -11,13 +11,13 @@ using Xamarin.Forms.Xaml;
 namespace PickerCatalogue.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class PickerView : ContentPage
+	public partial class CarritoView : ContentPage
 	{
-		public PickerView ()
+		public CarritoView ()
 		{
-            BindingContext = new PickerViewModel(Navigation);
+            BindingContext = new CarritoViewModel(Navigation);
 
-			InitializeComponent();
-		}
-	}
+            InitializeComponent();
+        }
+    }
 }

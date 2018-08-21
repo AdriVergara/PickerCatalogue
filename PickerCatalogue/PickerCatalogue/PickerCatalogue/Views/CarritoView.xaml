@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns:views="clr-namespace:ChronosSaaS.Views"
+             xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:widgets="clr-namespace:ChronosSaaS.Widgets"
+             x:Class="PickerCatalogue.Views.CarritoView">
+
+    <StackLayout Orientation="Vertical">
+
+        <ListView ItemsSource="{Binding CarritoModels}" HasUnevenRows="True" SelectedItem="{Binding SelectedItem}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="{Binding ImagesCollection[1].Image}" Aspect="AspectFit" HorizontalOptions="CenterAndExpand"/>
+
+                                <StackLayout Orientation="Horizontal" Grid.Row="0" Grid.Column="1" VerticalOptions="Center">
+                                    <Label Text="{Binding BrandName}"/>
+                                    <Label Text="{Binding ModelName}"/>
+                                </StackLayout>
+
+                                <StackLayout Orientation="Horizontal" Grid.Row="1" Grid.Column="1" VerticalOptions="Center">
+                                    <Label Text="Price: "/>
+                                    <Label Text="{Binding Price}"/>
+                                    <Label Text="€"/>
+                                </StackLayout>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <StackLayout Orientation="Horizontal" Margin="10">
+            <Label Text="Total: "/>
+            <Label Text="{Binding TotalCarrito}"/>
+        </StackLayout>
+        
+    </StackLayout>
+    
+</ContentPage>

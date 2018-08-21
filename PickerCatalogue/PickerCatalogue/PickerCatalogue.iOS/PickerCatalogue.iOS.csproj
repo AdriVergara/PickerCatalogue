@@ -147,6 +147,9 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="CarouselView.FormsPlugin">
+      <Version>5.2.0</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="3.0.0.561731" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
@@ -155,5 +158,135 @@
       <Project>{767489CD-F951-47DE-8130-60D76FC9D874}</Project>
       <Name>PickerCatalogue</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\CortBrand.jpg">
+      <Link>Resources\CortBrand.jpg</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\CortG1.jpeg">
+      <Link>Resources\CortG1.jpeg</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\CortG2.jpeg">
+      <Link>Resources\CortG2.jpeg</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\CortG3.jpeg">
+      <Link>Resources\CortG3.jpeg</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\CortG260_1.jpg">
+      <Link>Resources\CortG260_1.jpg</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\CortG260_2.jpg">
+      <Link>Resources\CortG260_2.jpg</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\CortG260_3.jpg">
+      <Link>Resources\CortG260_3.jpg</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\CortG260_4.jpg">
+      <Link>Resources\CortG260_4.jpg</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\CortG260_5.jpg">
+      <Link>Resources\CortG260_5.jpg</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\EpiLP_1.jpg">
+      <Link>Resources\EpiLP_1.jpg</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\EpiLP_2.jpg">
+      <Link>Resources\EpiLP_2.jpg</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\EpiLP_3.jpg">
+      <Link>Resources\EpiLP_3.jpg</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\EpiLP_4.jpg">
+      <Link>Resources\EpiLP_4.jpg</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\EpiLP_5.jpg">
+      <Link>Resources\EpiLP_5.jpg</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\EpiphoneBrand.jpg">
+      <Link>Resources\EpiphoneBrand.jpg</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\EpiSG_1.jpg">
+      <Link>Resources\EpiSG_1.jpg</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\EpiSG_2.jpg">
+      <Link>Resources\EpiSG_2.jpg</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\EpiSG_3.jpg">
+      <Link>Resources\EpiSG_3.jpg</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\EpiSG_4.jpg">
+      <Link>Resources\EpiSG_4.jpg</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\EpiSG_5.jpg">
+      <Link>Resources\EpiSG_5.jpg</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\EpiSG1.jpeg">
+      <Link>Resources\EpiSG1.jpeg</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\EpiSG2.jpeg">
+      <Link>Resources\EpiSG2.jpeg</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\GibsonBrand.png">
+      <Link>Resources\GibsonBrand.png</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\GibsonLP1.jpeg">
+      <Link>Resources\GibsonLP1.jpeg</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\GibsonLP2.jpeg">
+      <Link>Resources\GibsonLP2.jpeg</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\GibsonLP3.jpeg">
+      <Link>Resources\GibsonLP3.jpeg</Link>
+    </BundleResource>
   </ItemGroup>
 </Project>

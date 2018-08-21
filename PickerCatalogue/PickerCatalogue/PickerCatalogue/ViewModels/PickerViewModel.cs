@@ -1,10 +1,13 @@
-﻿using ChronosSaaS.Model;
+﻿using PickerCatalogue.Views;
+using PickerCatalogue.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace PickerCatalogue.ViewModels
 {
@@ -109,14 +112,18 @@ namespace PickerCatalogue.ViewModels
             }
         }
 
-        public PickerViewModel()
+        private INavigation Navigation { get; set; }
+
+        public PickerViewModel(INavigation _navigation)
         {
+            Navigation = _navigation;
+
             ModelSelected = new GuitarModel();
 
             Visible = "False";
             InitializeBrandsAndModels();
 
-            //NextPage = new Command(async () => await ExecuteNextPage());
+            NextPage = new Command(async () => await ExecuteNextPage());
             //GoToCarrito = new Command(async () => await ExecuteGoToCarrito());
         }
 
@@ -124,10 +131,10 @@ namespace PickerCatalogue.ViewModels
         //{
         //}
 
-        //private async Task ExecuteNextPage()
-        //{
-        //    //await Navigation.PushAsync(new View2());
-        //}
+        private async Task ExecuteNextPage()
+        {
+            await Navigation.PushAsync(new ShowGuitarModelView(ModelSelected, Navigation));
+        }
 
         //public void ExecuteCarouselView()
         //{

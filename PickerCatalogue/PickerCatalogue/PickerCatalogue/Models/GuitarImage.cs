@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 
-namespace ChronosSaaS.Model
+namespace PickerCatalogue.Models
 {
     public class GuitarImage
     {

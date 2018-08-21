@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:cv="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
+             x:Class="PickerCatalogue.Views.ShowGuitarModelView">
+
+    <StackLayout Margin="10">
+
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+            <Label Text="{Binding ModelSelected.BrandName}" FontSize="Large" TextColor="Black"/>
+            <Label Text="{Binding ModelSelected.ModelName}" FontSize="Large" TextColor="Black"/>
+        </StackLayout>
+
+        <StackLayout>
+
+            <cv:CarouselViewControl Position="{Binding position}" ItemsSource="{Binding MyCarousel.ItemsSource}" x:Name="CarouselImages" PositionSelectedCommand="{Binding Swiped}" Scrolled="CarouselImages_Scrolled" HeightRequest="250">
+                <cv:CarouselViewControl.ItemTemplate>
+                    <DataTemplate>
+
+                        <Image Aspect="AspectFit" Source="{Binding Image}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                            <!--<Image.GestureRecognizers>
+                                <TapGestureRecognizer Command=""/>
+                            </Image.GestureRecognizers>-->
+                        </Image>
+
+                    </DataTemplate>
+                </cv:CarouselViewControl.ItemTemplate>
+            </cv:CarouselViewControl>
+
+        </StackLayout>
+
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Price: "  TextColor="Black"/>
+            <Label Text="{Binding ModelSelected.Price}" TextColor="Black"/>
+        </StackLayout>
+
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Stock: " TextColor="Black"/>
+            <Label Text="{Binding ModelSelected.Stock}" TextColor="Black"/>
+        </StackLayout>
+
+        <Button Text="Buy it" Command="{Binding BuyModel}"/>
+
+    </StackLayout>
+</ContentPage>
