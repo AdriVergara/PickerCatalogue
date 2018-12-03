@@ -1,6 +1,7 @@
 ﻿using CarouselView.FormsPlugin.Abstractions;
 using PickerCatalogue.Model;
 using PickerCatalogue.Models;
+using PickerCatalogue.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,14 +13,9 @@ using Xamarin.Forms;
 
 namespace PickerCatalogue.ViewModels
 {
-    public class ShowGuitarModelViewModel : INotifyPropertyChanged
+    public class ShowGuitarModelViewModel : BaseViewModel
     {
         public ObservableCollection<GuitarModel> CarritoModels { get; set; }
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         public int _position;
         public int position
@@ -30,8 +26,6 @@ namespace PickerCatalogue.ViewModels
                 _position = value;
             }
         }
-
-        //public ObservableCollection<Item> ItemsList { get; set; }
 
         public ICommand Swiped { get; set; }
         public ICommand DeleteImage { get; set; }
@@ -69,8 +63,6 @@ namespace PickerCatalogue.ViewModels
 
         private ObservableCollection<GuitarImage> _ItemsList;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public ObservableCollection<GuitarImage> ItemsList
         {
             set
@@ -84,12 +76,14 @@ namespace PickerCatalogue.ViewModels
             }
         }
 
-        public INavigation Navigation { get; set; }
+        public INavigation _navigationService { get; set; }
 
-        public ShowGuitarModelViewModel(GuitarModel _selectedModel, INavigation _navigation)
+        public ShowGuitarModelViewModel(INavigation navigation, GuitarModel selectedModel, ObservableCollection<GuitarModel> carrito)
         {
-            ModelSelected = _selectedModel;
-            Navigation = _navigation;
+            _navigationService = navigation;
+
+            CarritoModels = carrito;
+            ModelSelected = selectedModel;
 
             _myCarousel = new CarouselViewControl();
             _ItemsList = ModelSelected.ImagesCollection;
@@ -102,17 +96,7 @@ namespace PickerCatalogue.ViewModels
         {
             CarritoModels.Add(ModelSelected);
 
-            //Dto.CarritoModels.Add(ModelSelected);
-            //await _navigationService.Navigate<EnumerablePickerViewModel, DTO>(Dto);
-
-            Navigation.PushAsync(new PickerViewModel());
+            await _navigationService.PushAsync(new PickerView(CarritoModels));
         }
-
-        //public override void Prepare(DTO parameter)
-        //{
-        //    //Dto = parameter;
-        //    //CarritoModels = Dto.CarritoModels;
-        //    //ModelSelected = Dto.ModelSelected;
-        //}
     }
 }

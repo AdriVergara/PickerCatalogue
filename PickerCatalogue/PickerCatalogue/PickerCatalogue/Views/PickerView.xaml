@@ -2,36 +2,27 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PickerCatalogue.Views.PickerView">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Icon="cart.png" Command="{Binding GoToCarrito}"/>
+    </ContentPage.ToolbarItems>
+    
     <ContentPage.Content>
 
-        <StackLayout Margin="10">
+    <StackLayout Margin="10">
 
+            <!--Brand Picker-->
             <Picker x:Name="BrandPicker" Title="Select a Brand" ItemDisplayBinding="{Binding BrandName}" ItemsSource="{Binding BrandsToShow}" SelectedItem="{Binding BrandSelected}" HorizontalOptions="FillAndExpand" />
 
+            <!--Model Picker-->
             <Picker x:Name="ModelPicker" Title="Select a Model" IsVisible="{Binding Visible}" ItemDisplayBinding="{Binding ModelName}" ItemsSource="{Binding BrandSelected.Models}" SelectedItem="{Binding ModelSelected}" HorizontalOptions="FillAndExpand" />
-
-            <!--<Image Source="{Binding ModelSelected.ImagePath}" Scale="0.3"/>-->
-
-            
-            
-            <!--<StackLayout BackgroundColor="DeepSkyBlue">
-
-                <cv:CarouselViewControl ItemsSource="{Binding MyCarousel.ItemsSource}"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-                    <cv:CarouselViewControl.ItemTemplate>
-                        <DataTemplate>
-                            <Image Aspect="AspectFit" Source="{Binding Image}" Scale="1"/>
-                        </DataTemplate>
-                    </cv:CarouselViewControl.ItemTemplate>
-                </cv:CarouselViewControl>
-
-            </StackLayout>-->
 
             <StackLayout Orientation="Horizontal">
                 <Label Text="{Binding BrandSelected.BrandName}"/>
                 <Label Text="{Binding ModelSelected.ModelName}"/>
             </StackLayout>
 
-            <Button Text="See this model" Command="{Binding NextPage}"/>
+            <Button Text="See this guitar" Command="{Binding NextPage}"/>
 
             <Button Text="See chart" Command="{Binding GoToCarrito}" Margin="0,10,0,0"/>
 

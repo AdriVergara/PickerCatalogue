@@ -1,13 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns:views="clr-namespace:ChronosSaaS.Views"
-             xmlns="http://xamarin.com/schemas/2014/forms" 
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:widgets="clr-namespace:ChronosSaaS.Widgets"
+             xmlns:widgets="clr-namespace:PickerCatalogue.Widgets"
              x:Class="PickerCatalogue.Views.CarritoView">
 
     <StackLayout Orientation="Vertical">
 
-        <ListView ItemsSource="{Binding CarritoModels}" HasUnevenRows="True" SelectedItem="{Binding SelectedItem}">
+        <widgets:CommandListView ItemsSource="{Binding CarritoModels}" HasUnevenRows="True" SelectedItem="{Binding SelectedItem}" Command="{Binding DeleteCartProductCommand}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -34,11 +33,19 @@
                                     <Label Text="{Binding Price}"/>
                                     <Label Text="€"/>
                                 </StackLayout>
+
+                            <!--<Button Image="Images/bin.png" HeightRequest="35" WidthRequest="35" HorizontalOptions="End" VerticalOptions="Center" Margin="0,0,15,0" Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"/>-->
+                            <Image Source="bin.png" HeightRequest="35" WidthRequest="35" HorizontalOptions="End" VerticalOptions="Center" Margin="0,0,15,0" Grid.Row="0" Grid.Column="2" Grid.RowSpan="2">
+                                <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding DeleteCartProductCommand, Source={x:Reference }}"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+
                         </Grid>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
-        </ListView>
+        </widgets:CommandListView>
 
         <StackLayout Orientation="Horizontal" Margin="10">
             <Label Text="Total: "/>

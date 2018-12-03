@@ -16,7 +16,7 @@
             <cv:CarouselViewControl Position="{Binding position}" ItemsSource="{Binding MyCarousel.ItemsSource}" x:Name="CarouselImages" PositionSelectedCommand="{Binding Swiped}" Scrolled="CarouselImages_Scrolled" HeightRequest="250">
                 <cv:CarouselViewControl.ItemTemplate>
                     <DataTemplate>
-
+                        
                         <Image Aspect="AspectFit" Source="{Binding Image}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                             <!--<Image.GestureRecognizers>
                                 <TapGestureRecognizer Command=""/>

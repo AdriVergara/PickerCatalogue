@@ -1,6 +1,8 @@
-﻿using PickerCatalogue.ViewModels;
+﻿using PickerCatalogue.Models;
+using PickerCatalogue.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,9 +15,9 @@ namespace PickerCatalogue.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class PickerView : ContentPage
 	{
-		public PickerView ()
+		public PickerView (ObservableCollection<GuitarModel> carrito = null)
 		{
-            BindingContext = new PickerViewModel(Navigation);
+            BindingContext = new PickerViewModel(Navigation, carrito);
 
 			InitializeComponent();
 		}

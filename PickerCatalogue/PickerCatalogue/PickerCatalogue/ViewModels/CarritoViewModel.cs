@@ -1,22 +1,18 @@
 ﻿using PickerCatalogue.Models;
+using Plugin.Notifications;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace PickerCatalogue.ViewModels
 {
-    public class CarritoViewModel : INotifyPropertyChanged
+    public class CarritoViewModel : BaseViewModel
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         public INavigation _navigationService { get; set; }
 
         private ObservableCollection<GuitarModel> _carritoModels { get; set; }
@@ -30,6 +26,20 @@ namespace PickerCatalogue.ViewModels
             get
             {
                 return _carritoModels;
+            }
+        }
+
+        private GuitarModel _selectedItem { get; set; }
+        public GuitarModel SelectedItem
+        {
+            set
+            {
+                _selectedItem = value;
+                OnPropertyChanged("SelectedItem");
+            }
+            get
+            {
+                return _selectedItem;
             }
         }
 
@@ -47,12 +57,26 @@ namespace PickerCatalogue.ViewModels
             }
         }
 
-        public CarritoViewModel(INavigation navigationService)
+        public ICommand DeleteCartProductCommand { get; set; }
+
+        public CarritoViewModel(INavigation navigation, ObservableCollection<GuitarModel> carrito)
         {
-            _navigationService = navigationService;
-            TotalCarrito = 0;
+            _navigationService = navigation;
+            CarritoModels = carrito;
+
+            TotalCarrito = CalculateTotal();
+
+            DeleteCartProductCommand = new Command(async () => await ExecuteDeleteCartProductCommand());
         }
 
+        private async Task ExecuteDeleteCartProductCommand()
+        {
+            //await CrossNotifications.Current.Send("Deleting item", "")
+
+            CarritoModels.Remove(SelectedItem);
+
+            TotalCarrito = CalculateTotal();
+        }
 
         public double CalculateTotal()
         {
@@ -65,13 +89,5 @@ namespace PickerCatalogue.ViewModels
 
             return value;
         } 
-
-        //public override void Prepare(DTO parameter)
-        //{
-        //    Dto = parameter;
-        //    CarritoModels = parameter.CarritoModels;
-
-        //    TotalCarrito = CalculateTotal();
-        //}
     }
 }
