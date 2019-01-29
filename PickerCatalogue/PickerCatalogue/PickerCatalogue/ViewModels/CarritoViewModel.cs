@@ -62,6 +62,7 @@ namespace PickerCatalogue.ViewModels
         public CarritoViewModel(INavigation navigation, ObservableCollection<GuitarModel> carrito)
         {
             _navigationService = navigation;
+
             CarritoModels = carrito;
 
             TotalCarrito = CalculateTotal();
