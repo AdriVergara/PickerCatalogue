@@ -6,7 +6,9 @@
 
     <StackLayout Orientation="Vertical">
 
-        <widgets:CommandListView ItemsSource="{Binding CarritoModels}" HasUnevenRows="True" SelectedItem="{Binding SelectedItem}" Command="{Binding DeleteCartProductCommand}">
+        <!--SelectedItem="{Binding SelectedItem}" Command="{Binding DeleteCartProductCommand}"-->
+        
+        <widgets:CommandListView ItemsSource="{Binding CarritoModels}" HasUnevenRows="True">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>

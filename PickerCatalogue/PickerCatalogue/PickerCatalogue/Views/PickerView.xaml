@@ -1,17 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
              x:Class="PickerCatalogue.Views.PickerView">
 
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Icon="cart.png" Command="{Binding GoToCarrito}"/>
-    </ContentPage.ToolbarItems>
+    <!--BarBackgroundColor="#2196F3"
+             BarTextColor="White"
+             android:TabbedPage.ToolbarPlacement="Bottom"
+             android:TabbedPage.BarItemColor="#66FFFFFF"
+             android:TabbedPage.BarSelectedItemColor="White"-->
     
-    <ContentPage.Content>
+    
 
-    <StackLayout Margin="10">
+    <!--<TabbedPage.Resources>
+        <ResourceDictionary>
+        </ResourceDictionary>
+    </TabbedPage.Resources>-->
 
-            <!--Brand Picker-->
+    <TabbedPage.ToolbarItems>
+        <ToolbarItem  Icon="cart.png" Command="{Binding GoToCarrito}"/>
+    </TabbedPage.ToolbarItems>
+
+    <!--<android:TabbedPage>
+        
+    </android:TabbedPage>-->
+    
+        <!--Brand Picker-->
+    
+    <!--<TabbedPage.ItemTemplate>
+        <DataTemplate>-->
+            <!--<ContentPage>-->
+    <StackLayout>
+
+        <StackLayout Margin="10">
+                    
             <Picker x:Name="BrandPicker" Title="Select a Brand" ItemDisplayBinding="{Binding BrandName}" ItemsSource="{Binding BrandsToShow}" SelectedItem="{Binding BrandSelected}" HorizontalOptions="FillAndExpand" />
 
             <!--Model Picker-->
@@ -24,9 +46,26 @@
 
             <Button Text="See this guitar" Command="{Binding NextPage}"/>
 
-            <Button Text="See chart" Command="{Binding GoToCarrito}" Margin="0,10,0,0"/>
-
+            <Button Text="See chart" Command="{Binding GoToCarrito}" Margin="0,10,0,0"/>    
+            
         </StackLayout>
 
-    </ContentPage.Content>
+        <Grid Margin="0,276,0,0" BackgroundColor="#2196F3" HeightRequest="70">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Text="Hola" Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center" />
+            <Label Text="Yep" Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Text="Adioh" Grid.Column="2" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+        </Grid> 
+
+    </StackLayout>
+    
+    <!--</ContentPage>
+        </DataTemplate>
+    </TabbedPage.ItemTemplate>-->
 </ContentPage>
