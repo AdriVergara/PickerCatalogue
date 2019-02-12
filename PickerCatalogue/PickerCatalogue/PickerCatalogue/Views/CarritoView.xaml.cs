@@ -17,9 +17,9 @@ namespace PickerCatalogue.Views
 	{
 		public CarritoView (ObservableCollection<GuitarModel> carrito)
 		{
-            BindingContext = new CarritoViewModel(Navigation, carrito);
-
             InitializeComponent();
+
+            BindingContext = new CarritoViewModel(Navigation, carrito);
         }
     }
 }

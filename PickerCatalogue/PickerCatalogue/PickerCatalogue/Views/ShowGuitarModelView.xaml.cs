@@ -12,9 +12,9 @@ namespace PickerCatalogue.Views
 	{
 		public ShowGuitarModelView (GuitarModel guit, ObservableCollection<GuitarModel> carrito)
 		{
-            BindingContext = new ShowGuitarModelViewModel(Navigation, guit, carrito);
-
             InitializeComponent();
+
+            BindingContext = new ShowGuitarModelViewModel(Navigation, guit, carrito);
 		}
 
         public void CarouselImages_Scrolled(object sender, CarouselView.FormsPlugin.Abstractions.ScrolledEventArgs e)
