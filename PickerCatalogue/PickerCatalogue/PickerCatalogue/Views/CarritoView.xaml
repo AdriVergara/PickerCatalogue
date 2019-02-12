@@ -2,11 +2,34 @@
 <ContentPage xmlns:views="clr-namespace:PickerCatalogue.Views"
              xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:PickerCatalogue.Controls"
              x:Class="PickerCatalogue.Views.CarritoView">
+
+    <!--xmlns:views="clr-namespace:PickerCatalogue.Views;assembly=PickerCatalogue">-->
+
+    <!--<ContentPage.Resources>
+        <ResourceDictionary>
+            <views:ListViewCellsView x:Key="ListViewCellsView"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>-->
 
     <StackLayout Orientation="Vertical">
 
-        <ListView ItemsSource="{Binding CarritoModels}" HasUnevenRows="True" SelectedItem="{Binding SelectedItem}">
+        <controls:CommandListView ItemsSource="{Binding CarritoModels}"
+                                    SeparatorVisibility="None"
+                                    HorizontalOptions="FillAndExpand"
+                                    HasUnevenRows="True"
+                                    IsPullToRefreshEnabled="False">
+            <controls:CommandListView.ItemTemplate>
+                <DataTemplate>
+                    <views:ListViewCellsView />
+                </DataTemplate>
+            </controls:CommandListView.ItemTemplate>
+        </controls:CommandListView>
+
+        <!--<ListView x:Name="CarritoList" ItemsSource="{Binding CarritoModels}" HasUnevenRows="True" SelectedItem="{Binding SelectedItem}" ItemTemplate="{StaticResource ListViewCellsView}"/>-->
+
+        <!--<ListView ItemsSource="{Binding CarritoModels}" HasUnevenRows="True" SelectedItem="{Binding SelectedItem}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -21,7 +44,8 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="{Binding ImagesCollection[1].Image}" Aspect="AspectFit" HorizontalOptions="CenterAndExpand"/>
+
+                            --><!--<Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="{Binding ImagesCollection[1].Image}" Aspect="AspectFit" HorizontalOptions="CenterAndExpand"/>
 
                                 <StackLayout Orientation="Horizontal" Grid.Row="0" Grid.Column="1" VerticalOptions="Center">
                                     <Label Text="{Binding BrandName}"/>
@@ -32,12 +56,12 @@
                                     <Label Text="Price: "/>
                                     <Label Text="{Binding Price}"/>
                                     <Label Text="€"/>
-                                </StackLayout>
+                                </StackLayout>--><!--
                         </Grid>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
-        </ListView>
+        </ListView>-->
 
         <StackLayout Orientation="Horizontal" Margin="10">
             <Label Text="Total: "/>
