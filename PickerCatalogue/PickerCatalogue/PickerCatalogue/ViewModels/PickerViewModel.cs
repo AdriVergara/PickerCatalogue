@@ -16,7 +16,21 @@ namespace PickerCatalogue.ViewModels
     public class PickerViewModel : BaseViewModel
     {
         public ICommand NextPage { get; set; }
+        public ICommand NextPageParam { get; set; }
         public ICommand GoToCarrito { get; set; }
+
+        private ICommand _searchCommand;
+        public ICommand SearchCommand
+        {
+            get
+            {
+                return _searchCommand ?? (_searchCommand = new Command<string>((text) =>
+                {
+                    // The text parameter can now be used for searching.
+                    text += "-";
+                }));
+            }
+        }
 
         public ObservableCollection<GuitarModel> CarritoModels { get; set; }
 
@@ -106,8 +120,14 @@ namespace PickerCatalogue.ViewModels
             InitializeBrandsAndModels();
 
             NextPage = new Command(async () => await ExecuteNextPage());
+            NextPageParam = new Command(async (Param) => await ExecuteNextPage(Param));
             GoToCarrito = new Command(async () => await ExecuteGoToCarrito());
         }
+
+        //private Task ExecuteNextPage(object param)
+        //{
+        //    //
+        //}
 
         private async Task ExecuteGoToCarrito()
         {

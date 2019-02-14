@@ -1,4 +1,5 @@
 ﻿using PickerCatalogue.Models;
+using PickerCatalogue.Views;
 using Plugin.Notifications;
 using System;
 using System.Collections.Generic;
@@ -57,7 +58,34 @@ namespace PickerCatalogue.ViewModels
             }
         }
 
-        public ICommand DeleteCartProductCommand { get; set; }
+        //Workaround to command from object inside a listview
+        public ICommand GoToGuitarModelCommand
+        {
+            get
+            {
+                return new Command((e) =>
+                {
+                    var item = (e as GuitarModel);
+
+                    _navigationService.PushAsync(new ShowGuitarModelView(item, CarritoModels));
+                });
+            }
+        }
+
+        //Workaround to command from object inside a listview
+        public ICommand DeleteCartProductCommand
+        {
+            get
+            {
+                return new Command((e) =>
+                {
+                    var item = (e as GuitarModel);
+
+                    CarritoModels.Remove(item);
+                    TotalCarrito = CalculateTotal();
+                });
+            }
+        }
 
         public CarritoViewModel(INavigation navigation, ObservableCollection<GuitarModel> carrito)
         {
@@ -67,17 +95,17 @@ namespace PickerCatalogue.ViewModels
 
             TotalCarrito = CalculateTotal();
 
-            DeleteCartProductCommand = new Command(async () => await ExecuteDeleteCartProductCommand());
+            //DeleteCartProductCommand = new Command(async () => await ExecuteDeleteCartProductCommand());
         }
 
-        private async Task ExecuteDeleteCartProductCommand()
-        {
-            //await CrossNotifications.Current.Send("Deleting item", "")
+        //private async Task ExecuteDeleteCartProductCommand()
+        //{
+        //    //await CrossNotifications.Current.Send("Deleting item", "")
 
-            CarritoModels.Remove(SelectedItem);
+        //    CarritoModels.Remove(SelectedItem);
 
-            TotalCarrito = CalculateTotal();
-        }
+        //    TotalCarrito = CalculateTotal();
+        //}
 
         public double CalculateTotal()
         {

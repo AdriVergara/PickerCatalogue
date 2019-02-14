@@ -103,6 +103,9 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\PickerCatalogue\Images\ContinueChartProducts.png">
+      <Link>ContinueChartProducts.png</Link>
+    </Content>
     <Content Include="..\PickerCatalogue\Images\CortBrand.jpg">
       <Link>CortBrand.jpg</Link>
     </Content>

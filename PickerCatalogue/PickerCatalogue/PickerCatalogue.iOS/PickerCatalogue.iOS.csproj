@@ -295,4 +295,9 @@
       <Link>Resources\GibsonLP3.jpeg</Link>
     </BundleResource>
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\PickerCatalogue\Images\ContinueChartProducts.png">
+      <Link>Resources\ContinueChartProducts.png</Link>
+    </BundleResource>
+  </ItemGroup>
 </Project>
