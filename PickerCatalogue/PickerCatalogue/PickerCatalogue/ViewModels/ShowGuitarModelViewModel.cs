@@ -2,6 +2,7 @@
 using PickerCatalogue.Model;
 using PickerCatalogue.Models;
 using PickerCatalogue.Views;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -30,6 +31,7 @@ namespace PickerCatalogue.ViewModels
         public ICommand Swiped { get; set; }
         public ICommand DeleteImage { get; set; }
         public ICommand BuyModel { get; set; }
+        public ICommand ImageZoomCommand { get; set; }
 
         public ICommand CarouselImages_Scrolled { get; set; }
 
@@ -44,6 +46,34 @@ namespace PickerCatalogue.ViewModels
             get
             {
                 return _modelSelected;
+            }
+        }
+
+        public string _image { get; set; }
+        public string Image
+        {
+            set
+            {
+                _image = value;
+                OnPropertyChanged("Image");
+            }
+            get
+            {
+                return _image;
+            }
+        }
+
+        public string _stockImage { get; set; }
+        public string StockImage
+        {
+            set
+            {
+                _stockImage = value;
+                OnPropertyChanged("StockImage");
+            }
+            get
+            {
+                return _stockImage;
             }
         }
 
@@ -85,11 +115,57 @@ namespace PickerCatalogue.ViewModels
             CarritoModels = carrito;
             ModelSelected = selectedModel;
 
+            StockImage = checkAvailability();
+
             _myCarousel = new CarouselViewControl();
             _ItemsList = ModelSelected.ImagesCollection;
             _myCarousel.ItemsSource = _ItemsList;
 
             BuyModel = new Command(async () => await ExecuteBuyModel());
+            ImageZoomCommand = new Command(async (Param) => await ExecuteImageZoomCommand(Param));
+        }
+
+        public static async void testt(string param)
+        {
+            //string image = /*param.ToString();*/ ModelSelected.ImagesCollection[0].Image.ToString();
+
+            await PopupNavigation.Instance.PushAsync(new GuitarImagePopUp(param));
+        }
+
+        private async Task ExecuteImageZoomCommand(object param)
+        {
+
+            string image = /*param.ToString();*/ ModelSelected.ImagesCollection[0].Image.ToString();
+
+            await PopupNavigation.Instance.PushAsync(new GuitarImagePopUp(image));
+        }
+
+        private string checkAvailability()
+        {
+            int Stock = ModelSelected.Stock;
+            string ImageName = "";
+
+            if (Stock >= 10)
+            {
+                ImageName = "StockGreen.png";
+            }
+            else if(Stock > 0)
+            {
+                ImageName = "StockYellow.png";
+            }
+            else
+            {
+                ImageName = "StockRed.png";
+            }
+
+            return ImageName;
+        }
+
+        void OnTapped(object sender, EventArgs e)
+        {
+            //taps++;
+            //var img = (Image)sender;
+            //Debug.WriteLine($"tapped: {taps}  {img.Name}");
         }
 
         private async Task ExecuteBuyModel()

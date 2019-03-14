@@ -1,11 +1,7 @@
-﻿using PickerCatalogue.Models;
+﻿using Acr.UserDialogs;
+using PickerCatalogue.Models;
 using PickerCatalogue.Views;
-using Plugin.Notifications;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -58,6 +54,8 @@ namespace PickerCatalogue.ViewModels
             }
         }
 
+        public GuitarModel Selection { get; set; }
+
         //Workaround to command from object inside a listview
         public ICommand GoToGuitarModelCommand
         {
@@ -79,10 +77,9 @@ namespace PickerCatalogue.ViewModels
             {
                 return new Command((e) =>
                 {
-                    var item = (e as GuitarModel);
+                    Selection = (GuitarModel)e;
 
-                    CarritoModels.Remove(item);
-                    TotalCarrito = CalculateTotal();
+                    var a = DeleteCartProduct(Selection);
                 });
             }
         }
@@ -94,18 +91,24 @@ namespace PickerCatalogue.ViewModels
             CarritoModels = carrito;
 
             TotalCarrito = CalculateTotal();
-
-            //DeleteCartProductCommand = new Command(async () => await ExecuteDeleteCartProductCommand());
         }
 
-        //private async Task ExecuteDeleteCartProductCommand()
-        //{
-        //    //await CrossNotifications.Current.Send("Deleting item", "")
+        private async Task DeleteCartProduct(GuitarModel selection)
+        {
+            bool result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
+            {
+                Title = "Deleting Product from cart",
+                Message = "Are you sure?",
+                OkText = "Delete",
+                CancelText = "Cancel"
+            });
 
-        //    CarritoModels.Remove(SelectedItem);
-
-        //    TotalCarrito = CalculateTotal();
-        //}
+            if (result)
+            {
+                CarritoModels.Remove(selection);
+                TotalCarrito = CalculateTotal();
+            }
+        }
 
         public double CalculateTotal()
         {
@@ -115,7 +118,6 @@ namespace PickerCatalogue.ViewModels
             {
                 value += model.Price;
             }
-
             return value;
         } 
     }

@@ -6,6 +6,9 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Xamarin.Forms;
+using Plugin.Toasts;
+using Acr.UserDialogs;
 
 namespace PickerCatalogue.Droid
 {
@@ -19,7 +22,17 @@ namespace PickerCatalogue.Droid
 
             base.OnCreate(bundle);
 
+            //Image Popups
+            Rg.Plugins.Popup.Popup.Init(this, bundle);
+
+            UserDialogs.Init(this);
+
             global::Xamarin.Forms.Forms.Init(this, bundle);
+
+            DependencyService.Register<ToastNotification>(); // Register your dependency
+            // If you are using Android you must pass through the activity
+            ToastNotification.Init(this);
+
             LoadApplication(new App());
         }
     }
