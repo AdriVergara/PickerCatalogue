@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace PickerCatalogue.Views
+namespace PickerCatalogue.Views.Cells
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class ListViewCellsView : ViewCell
+	public partial class CartProductCell : ViewCell
 	{
-		public ListViewCellsView ()
+		public CartProductCell ()
 		{
 			InitializeComponent ();
 		}

@@ -10,11 +10,11 @@ namespace PickerCatalogue.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ShowGuitarModelView : ContentPage
 	{
-		public ShowGuitarModelView (INavigation _navigation, GuitarModel _modelSelected, ObservableCollection<GuitarModel> _carritoModels)
+		public ShowGuitarModelView (GuitarModel guit, ObservableCollection<GuitarModel> carrito)
 		{
-            BindingContext = new ShowGuitarModelViewModel(_navigation, _modelSelected, _carritoModels);
-
             InitializeComponent();
+
+            BindingContext = new ShowGuitarModelViewModel(Navigation, guit, carrito);
 		}
 
         public void CarouselImages_Scrolled(object sender, CarouselView.FormsPlugin.Abstractions.ScrolledEventArgs e)

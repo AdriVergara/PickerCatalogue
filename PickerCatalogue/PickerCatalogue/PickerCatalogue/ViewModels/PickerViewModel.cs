@@ -1,5 +1,6 @@
 ﻿using PickerCatalogue.Views;
 using PickerCatalogue.Models;
+using PickerCatalogue.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,32 +9,89 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using PickerCatalogue.Services;
+using System.Linq;
 
 namespace PickerCatalogue.ViewModels
 {
-    public class PickerViewModel : INotifyPropertyChanged
+    public class PickerViewModel : BaseViewModel
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public ICommand NextPage { get; set; }
+        public ICommand VisitGuitarModel { get; set; }
+        public ICommand NextPageParam { get; set; }
         public ICommand GoToCarrito { get; set; }
+        public ICommand ChangeOrderDirection { get; set; }
 
-        private ObservableCollection<GuitarModel> _carritoModels { get; set; }
-        public ObservableCollection<GuitarModel> CarritoModels
+        //private ICommand _searchCommand;
+        //public ICommand SearchCommand
+        //{
+        //    get
+        //    {
+        //        return _searchCommand ?? (_searchCommand = new Command<string>((text) =>
+        //        {
+        //            // The text parameter can now be used for searching.
+        //            text += "-";
+        //        }));
+        //    }
+        //}
+
+        public ObservableCollection<GuitarModel> CarritoModels { get; set; }
+
+        private ObservableCollection<GuitarModel> _productsToShow { get; set; }
+        public ObservableCollection<GuitarModel> ProductsToShow
         {
-            set
-            {
-                _carritoModels = value;
-                OnPropertyChanged("CarritoModels");
-            }
             get
             {
-                return _carritoModels;
+                return _productsToShow;
+            }
+            set
+            {
+                _productsToShow = value;
+                OnPropertyChanged("ProductsToShow");
+            }
+        }
+
+        private ObservableCollection<string> _filterByOptions { get; set; }
+        public ObservableCollection<string> FilterByOptions
+        {
+            get
+            {
+                return _filterByOptions;
+            }
+            set
+            {
+                _filterByOptions = value;
+                OnPropertyChanged("FilterByOptions");
+            }
+        }
+
+        private int _orderDirection = 1;
+        public int OrderDirection
+    {
+            get
+            {
+                return _orderDirection;
+            }
+            set
+            {
+                _orderDirection = value;
+                OnPropertyChanged("OrderDirection");
+                FilterProductsList();
+            }
+        }
+
+        string _selectedFilter = "Brand";
+        public string SelectedFilter
+        {
+            get
+            {
+                return _selectedFilter;
+            }
+            set
+            {
+                //if (SetProperty(ref _selectedFilter, value))
+                _selectedFilter = value;
+                OnPropertyChanged("SelectedFilter");
+                FilterProductsList();
             }
         }
 
@@ -78,7 +136,6 @@ namespace PickerCatalogue.ViewModels
             {
                 _modelSelected = value;
                 OnPropertyChanged("ModelSelected");
-                //ExecuteCarouselView();
             }
         }
 
@@ -96,115 +153,189 @@ namespace PickerCatalogue.ViewModels
             }
         }
 
-        private INavigation Navigation { get; set; }
+        private INavigation _navigationService { get; set; }
 
-        public PickerViewModel(INavigation _navigation, ObservableCollection<GuitarModel> _carritoModels)
+        private readonly IBrandsService _brandsService;
+
+        public PickerViewModel(INavigation navigation, ObservableCollection<GuitarModel> carrito)
         {
-            Navigation = _navigation;
+            _navigationService = navigation;
 
+            //initialize carrito only when start the program
+            if (carrito == null)
+            {
+                CarritoModels = new ObservableCollection<GuitarModel>();
+            }
+            else
+            {
+                CarritoModels = carrito;
+            }
+
+            FilterByOptions = new ObservableCollection<string>() { "Brand", "Price", "Stock", "Rating" };
+
+            //SelectedFilter = "Brand";
+            //Visible = "False";
+
+            _brandsService = new BrandsService();
+            BrandsToShow = new ObservableCollection<Brand>();
+            ProductsToShow = new ObservableCollection<GuitarModel>();
             ModelSelected = new GuitarModel();
-            CarritoModels = _carritoModels;
 
-            Visible = "False";
             InitializeBrandsAndModels();
+            ProductsToShow = InitializeAllProductsCollection();
 
-            NextPage = new Command(async () => await ExecuteNextPage());
+            //FilterProductsList();
+
+            VisitGuitarModel = new Command(async () => await ExecuteVisitGuitarModel());
+            //NextPageParam = new Command(async (Param) => await ExecuteNextPage(Param));
             GoToCarrito = new Command(async () => await ExecuteGoToCarrito());
+            ChangeOrderDirection = new Command(async () => await ExecuteChangeOrderDirection());
         }
+
+        private async Task ExecuteChangeOrderDirection()
+        {
+            OrderDirection *= -1;
+        }
+
+        private void FilterProductsList()
+        {
+            switch (SelectedFilter)
+            {
+                case "Price" : FilterByPrice();
+                    break;
+                case "Brand" : FilterByBrand();
+                    break;
+                case "Stock" : FilterByStock();
+                    break;
+                case "Rating": FilterByRating();
+                    break;
+            }
+        }
+
+        private void FilterByRating()
+        {
+            ObservableCollection<GuitarModel> OrderedCollection = new ObservableCollection<GuitarModel>();
+            List<GuitarModel> OrderedList = ProductsToShow.ToList();
+
+            if (OrderDirection == 1)
+            {
+                OrderedList = OrderedList.OrderBy(i => i.Rating).ToList();
+            }
+            else if(OrderDirection == -1)
+            {
+                OrderedList = OrderedList.OrderByDescending(i => i.Rating).ToList();
+            }
+
+            foreach (GuitarModel model in OrderedList)
+            {
+                OrderedCollection.Add(model);
+            }
+
+            ProductsToShow = OrderedCollection;
+        }
+
+        private void FilterByPrice()
+        {
+            ObservableCollection<GuitarModel> OrderedCollection = new ObservableCollection<GuitarModel>();
+            List<GuitarModel> OrderedList = ProductsToShow.ToList();
+
+            if (OrderDirection == 1)
+            {
+                OrderedList = OrderedList.OrderBy(i => i.Price).ToList();
+            }
+            else if (OrderDirection == -1)
+            {
+                OrderedList = OrderedList.OrderByDescending(i => i.Price).ToList();
+            }
+
+            foreach (GuitarModel model in OrderedList)
+            {
+                OrderedCollection.Add(model);
+            }
+
+            ProductsToShow = OrderedCollection;
+        }
+
+        private void FilterByBrand()
+        {
+            ObservableCollection<GuitarModel> OrderedCollection = new ObservableCollection<GuitarModel>();
+            List<GuitarModel> OrderedList = ProductsToShow.ToList();
+
+            if (OrderDirection == 1)
+            {
+                OrderedList = OrderedList.OrderBy(i => i.BrandName).ToList();
+            }
+            else if (OrderDirection == -1)
+            {
+                OrderedList = OrderedList.OrderByDescending(i => i.BrandName).ToList();
+            }
+
+            foreach (GuitarModel model in OrderedList)
+            {
+                OrderedCollection.Add(model);
+            }
+
+            //OrderedCollection.Add(OrderedList[0]);
+            //OrderedCollection.Add(OrderedList[2]);
+            //OrderedCollection.Add(OrderedList[3]);
+
+            ProductsToShow = OrderedCollection;
+        }
+
+        private void FilterByStock()
+        {
+            ObservableCollection<GuitarModel> OrderedCollection = new ObservableCollection<GuitarModel>();
+            List<GuitarModel> OrderedList = ProductsToShow.ToList();
+
+            if (OrderDirection == 1)
+            {
+                OrderedList = OrderedList.OrderBy(i => i.Stock).ToList();
+            }
+            else if (OrderDirection == -1)
+            {
+                OrderedList = OrderedList.OrderByDescending(i => i.Stock).ToList();
+            }
+
+            foreach (GuitarModel model in OrderedList)
+            {
+                OrderedCollection.Add(model);
+            }
+
+            ProductsToShow = OrderedCollection;
+        }
+
+        private ObservableCollection<GuitarModel> InitializeAllProductsCollection()
+        {
+            ObservableCollection<GuitarModel> NewCollection = new ObservableCollection<GuitarModel>();
+
+            foreach (Brand brand in BrandsToShow)
+            {
+                foreach (GuitarModel model in brand.Models)
+                {
+                    NewCollection.Add(model);
+                }
+            }
+            return NewCollection;
+        }
+
+        //private Task ExecuteNextPage(object param)
+        //{
+        //    //
+        //}
 
         private async Task ExecuteGoToCarrito()
         {
-            await Navigation.PushAsync(new CarritoView(Navigation, CarritoModels));
+            await _navigationService.PushAsync(new CarritoView(CarritoModels));
         }
 
-        private async Task ExecuteNextPage()
+        private async Task ExecuteVisitGuitarModel()
         {
-            await Navigation.PushAsync(new ShowGuitarModelView(Navigation, ModelSelected, CarritoModels));
+            await _navigationService.PushAsync(new ShowGuitarModelView(ModelSelected, CarritoModels));
         }
 
         private void InitializeBrandsAndModels()
         {
-            var EpiSG = new GuitarModel()
-            {
-                BrandName = "Epiphone",
-                ModelName = "SG G 400",
-                ImagesCollection = new ObservableCollection<GuitarImage> { new GuitarImage() { Id = 0, Image = "EpiSG_1.jpg" }, new GuitarImage() { Id = 1, Image = "EpiSG_2.jpg" }, new GuitarImage() { Id = 2, Image = "EpiSG_3.jpg" }, new GuitarImage() { Id = 3, Image = "EpiSG_4.jpg" }, new GuitarImage() { Id = 4, Image = "EpiSG_5.jpg" } },
-                Price = 350,
-                Stock = 17
-            };
-
-            var EpiLP = new GuitarModel()
-            {
-                BrandName = "Epiphone",
-                ModelName = "Les Paul",
-                ImagesCollection = new ObservableCollection<GuitarImage> { new GuitarImage() { Id = 0, Image = "EpiLP_1.jpg" }, new GuitarImage() { Id = 1, Image = "EpiLP_2.jpg" }, new GuitarImage() { Id = 2, Image = "EpiLP_3.jpg" }, new GuitarImage() { Id = 3, Image = "EpiLP_4.jpg" }, new GuitarImage() { Id = 4, Image = "EpiLP_5.jpg" } },
-                Price = 430,
-                Stock = 12
-            };
-
-            var Epiphone = new Brand()
-            {
-                BrandName = "Epiphone",
-                Models = new ObservableCollection<GuitarModel> { EpiSG, EpiLP },
-                ImagePath = "EpiphoneBrand.jpg"
-            };
-
-            var CortG = new GuitarModel()
-            {
-                BrandName = "Cort",
-                ModelName = "G 260",
-                ImagesCollection = new ObservableCollection<GuitarImage> { new GuitarImage() { Id = 0, Image = "CortG260_1.jpg" }, new GuitarImage() { Id = 1, Image = "CortG260_2.jpg" }, new GuitarImage() { Id = 2, Image = "CortG260_3.jpg" }, new GuitarImage() { Id = 3, Image = "CortG260_4.jpg" }, new GuitarImage() { Id = 4, Image = "CortG260_5.jpg" } },
-                Price = 270,
-                Stock = 7
-            };
-
-            var CortBO = new GuitarModel()
-            {
-                BrandName = "Cort",
-                ModelName = "BO",
-                ImagesCollection = new ObservableCollection<GuitarImage> { /*"Epi.jpeg", "EpiSG2.jpeg"*/ },
-                Price = 290,
-                Stock = 4
-            };
-
-            var Cort = new Brand()
-            {
-                BrandName = "Cort",
-                Models = new ObservableCollection<GuitarModel> { CortG, CortBO },
-                ImagePath = "CortBrand.jpg"
-            };
-
-            var GibsonSG = new GuitarModel()
-            {
-                BrandName = "Gibson",
-                ModelName = "SG",
-                ImagesCollection = new ObservableCollection<GuitarImage> { /*"CortG1.jpeg", "CortG2.jpeg", "CortG3.jpeg"*/ },
-                Price = 870,
-                Stock = 9
-            };
-
-            var GibsonLP = new GuitarModel()
-            {
-                BrandName = "Gibson",
-                ModelName = "Les Paul",
-                ImagesCollection = new ObservableCollection<GuitarImage> { /*"Epi.jpeg", "EpiSG2.jpeg"*/ },
-                Price = 1300,
-                Stock = 12
-            };
-
-            var Gibson = new Brand()
-            {
-                BrandName = "Gibson",
-                Models = new ObservableCollection<GuitarModel> { GibsonSG, GibsonLP },
-                ImagePath = "GibsonBrand.png"
-            };
-
-            ///////////////
-
-            BrandsToShow = new ObservableCollection<Brand>
-            {
-                Epiphone, Cort, Gibson
-            };
+            BrandsToShow = _brandsService.GetBrands();  
         }
     }
 }

@@ -7,39 +7,45 @@
     <StackLayout Margin="10">
 
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-            <Label Text="{Binding ModelSelected.BrandName}" FontSize="Large" TextColor="Black"/>
-            <Label Text="{Binding ModelSelected.ModelName}" FontSize="Large" TextColor="Black"/>
+            <Label Text="{Binding ModelSelected.BrandName}" FontSize="Large" TextColor="Black" FontAttributes="Bold"/>
+            <Label Text="{Binding ModelSelected.ModelName}" FontSize="Large" TextColor="Black" FontAttributes="Bold"/>
         </StackLayout>
 
-        <StackLayout>
-
-            <cv:CarouselViewControl Position="{Binding position}" ItemsSource="{Binding MyCarousel.ItemsSource}" x:Name="CarouselImages" PositionSelectedCommand="{Binding Swiped}" Scrolled="CarouselImages_Scrolled" HeightRequest="250">
+        <StackLayout Margin="0, 10">
+            <cv:CarouselViewControl Position="{Binding position}" ItemsSource="{Binding MyCarousel.ItemsSource}" x:Name="CarouselImages" PositionSelectedCommand="{Binding Swiped}" Scrolled="CarouselImages_Scrolled" HeightRequest="300">
                 <cv:CarouselViewControl.ItemTemplate>
                     <DataTemplate>
-
-                        <Image Aspect="AspectFit" Source="{Binding Image}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-                            <!--<Image.GestureRecognizers>
-                                <TapGestureRecognizer Command=""/>
-                            </Image.GestureRecognizers>-->
+                        <Image x:Name="currentGuitarImage" Aspect="AspectFit" Source="{Binding Image}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ImageZoomCommand}" CommandParameter="{Binding Image}"/>
+                            </Image.GestureRecognizers>
                         </Image>
-
                     </DataTemplate>
                 </cv:CarouselViewControl.ItemTemplate>
             </cv:CarouselViewControl>
 
+            <Button Text="Add to cart" Margin="10" Command="{Binding BuyModel}" VerticalOptions="CenterAndExpand" HorizontalOptions="Center" HeightRequest="40" WidthRequest="150" BackgroundColor="Orange" BorderColor="DarkBlue" BorderWidth="2" BorderRadius="10" TextColor="DarkBlue"/>
         </StackLayout>
 
         <StackLayout Orientation="Horizontal">
-            <Label Text="Price: "  TextColor="Black"/>
-            <Label Text="{Binding ModelSelected.Price}" TextColor="Black"/>
-        </StackLayout>
+            <StackLayout Margin="10,0">
+                <!--Price-->
+                <StackLayout Orientation="Horizontal" Margin="0,15,0,0">
+                    <Label Text="Price: " TextColor="Black" Font="18" FontAttributes="Bold" VerticalTextAlignment="Center"/>
+                    <Label Text="{Binding ModelSelected.Price}" TextColor="Black" Font="18" FontAttributes="Bold" VerticalTextAlignment="Center"/>
+                    <Label Text="€" TextColor="Black" Font="18" FontAttributes="Bold" VerticalTextAlignment="Center"/>
+                </StackLayout>
+            
+                <!--Stock-->
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Stock: " TextColor="Black" Font="18" FontAttributes="Bold"/>
+                    <Image Source="{Binding StockImage}" VerticalOptions="Center"/>
+                    <!--<Label Text="{Binding ModelSelected.Stock}" TextColor="Black" Font="18"/>-->
+                </StackLayout>
+            </StackLayout>
 
-        <StackLayout Orientation="Horizontal">
-            <Label Text="Stock: " TextColor="Black"/>
-            <Label Text="{Binding ModelSelected.Stock}" TextColor="Black"/>
+            <Image Source="{Binding ModelSelected.BrandImage}" HeightRequest="60" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand" Margin="10,0" Aspect="AspectFit"/>
         </StackLayout>
-
-        <Button Text="Buy it" Command="{Binding BuyModel}"/>
 
     </StackLayout>
 </ContentPage>

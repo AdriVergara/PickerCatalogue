@@ -1,22 +1,15 @@
-﻿using PickerCatalogue.Models;
-using System;
-using System.Collections.Generic;
+﻿using Acr.UserDialogs;
+using PickerCatalogue.Models;
+using PickerCatalogue.Views;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace PickerCatalogue.ViewModels
 {
-    public class CarritoViewModel : INotifyPropertyChanged
+    public class CarritoViewModel : BaseViewModel
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         public INavigation _navigationService { get; set; }
 
         private ObservableCollection<GuitarModel> _carritoModels { get; set; }
@@ -30,6 +23,20 @@ namespace PickerCatalogue.ViewModels
             get
             {
                 return _carritoModels;
+            }
+        }
+
+        private GuitarModel _selectedItem { get; set; }
+        public GuitarModel SelectedItem
+        {
+            set
+            {
+                _selectedItem = value;
+                OnPropertyChanged("SelectedItem");
+            }
+            get
+            {
+                return _selectedItem;
             }
         }
 
@@ -47,14 +54,61 @@ namespace PickerCatalogue.ViewModels
             }
         }
 
-        public CarritoViewModel(INavigation navigationService, ObservableCollection<GuitarModel> _carritoModels)
+        public GuitarModel Selection { get; set; }
+
+        //Workaround to command from object inside a listview
+        public ICommand GoToGuitarModelCommand
         {
-            _navigationService = navigationService;
-            CarritoModels = _carritoModels;
+            get
+            {
+                return new Command((e) =>
+                {
+                    var item = (e as GuitarModel);
+
+                    _navigationService.PushAsync(new ShowGuitarModelView(item, CarritoModels));
+                });
+            }
+        }
+
+        //Workaround to command from object inside a listview
+        public ICommand DeleteCartProductCommand
+        {
+            get
+            {
+                return new Command((e) =>
+                {
+                    Selection = (GuitarModel)e;
+
+                    var a = DeleteCartProduct(Selection);
+                });
+            }
+        }
+
+        public CarritoViewModel(INavigation navigation, ObservableCollection<GuitarModel> carrito)
+        {
+            _navigationService = navigation;
+
+            CarritoModels = carrito;
 
             TotalCarrito = CalculateTotal();
         }
 
+        private async Task DeleteCartProduct(GuitarModel selection)
+        {
+            bool result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
+            {
+                Title = "Deleting Product from cart",
+                Message = "Are you sure?",
+                OkText = "Delete",
+                CancelText = "Cancel"
+            });
+
+            if (result)
+            {
+                CarritoModels.Remove(selection);
+                TotalCarrito = CalculateTotal();
+            }
+        }
 
         public double CalculateTotal()
         {
@@ -64,16 +118,7 @@ namespace PickerCatalogue.ViewModels
             {
                 value += model.Price;
             }
-
             return value;
         } 
-
-        //public override void Prepare(DTO parameter)
-        //{
-        //    Dto = parameter;
-        //    CarritoModels = parameter.CarritoModels;
-
-        //    TotalCarrito = CalculateTotal();
-        //}
     }
 }

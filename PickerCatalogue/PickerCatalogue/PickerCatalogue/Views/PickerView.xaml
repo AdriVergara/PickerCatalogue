@@ -1,46 +1,80 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:widgets="clr-namespace:PickerCatalogue.Widgets"
+             xmlns:cells="clr-namespace:PickerCatalogue.Views.Cells"
+             xmlns:converters="clr-namespace:PickerCatalogue.Converters"
              x:Class="PickerCatalogue.Views.PickerView">
-    
-    <ContentPage.ToolbarItems>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:OrderDirectionToImageConverter x:Key="orderDirCnv"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <TabbedPage.ToolbarItems>
         <ToolbarItem Icon="cart.png" Command="{Binding GoToCarrito}"/>
-    </ContentPage.ToolbarItems>
+    </TabbedPage.ToolbarItems>
 
-    <ContentPage.Content>
+    <StackLayout>
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <StackLayout Margin="10">
+            <Image Source="GibsonBrand.png" Grid.Row="0" Grid.Column="0">
+                <!--<Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding NextPageParam}" CommandParameter="Gibson"/>
+                </Image.GestureRecognizers>-->
+            </Image>
+            <Image Source="CortBrand.png" Grid.Row="0" Grid.Column="1"/>
+            <Image Source="EpiphoneBrand.png" Grid.Row="0" Grid.Column="2"/>
+        </Grid>
 
-            <Picker x:Name="BrandPicker" Title="Select a Brand" ItemDisplayBinding="{Binding BrandName}" ItemsSource="{Binding BrandsToShow}" SelectedItem="{Binding BrandSelected}" HorizontalOptions="FillAndExpand" />
+        <BoxView HeightRequest="1" Color="LightGray"/>
 
-            <Picker x:Name="ModelPicker" Title="Select a Model" IsVisible="{Binding Visible}" ItemDisplayBinding="{Binding ModelName}" ItemsSource="{Binding BrandSelected.Models}" SelectedItem="{Binding ModelSelected}" HorizontalOptions="FillAndExpand" />
+        <!--<SearchBar x:Name="SearchBar" SearchCommand="{Binding SearchCommand}" SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}">
+            <SearchBar.Behaviors>
+                <local:TextChangedBehavior />
+            </SearchBar.Behaviors>
+        </SearchBar>-->
 
-            <!--<Image Source="{Binding ModelSelected.ImagePath}" Scale="0.3"/>-->
-
-            
-            
-            <!--<StackLayout BackgroundColor="DeepSkyBlue">
-
-                <cv:CarouselViewControl ItemsSource="{Binding MyCarousel.ItemsSource}"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-                    <cv:CarouselViewControl.ItemTemplate>
-                        <DataTemplate>
-                            <Image Aspect="AspectFit" Source="{Binding Image}" Scale="1"/>
-                        </DataTemplate>
-                    </cv:CarouselViewControl.ItemTemplate>
-                </cv:CarouselViewControl>
-
-            </StackLayout>-->
-
-            <StackLayout Orientation="Horizontal">
-                <Label Text="{Binding BrandSelected.BrandName}"/>
-                <Label Text="{Binding ModelSelected.ModelName}"/>
-            </StackLayout>
-
-            <Button Text="See this model" Command="{Binding NextPage}"/>
-
-            <Button Text="See chart" Command="{Binding GoToCarrito}" Margin="0,10,0,0"/>
-
+        <!--Filter Picker-->
+        <StackLayout Orientation="Horizontal" HorizontalOptions="End" HeightRequest="40">
+            <Image Source="{Binding OrderDirection, Converter={StaticResource orderDirCnv}}" VerticalOptions="CenterAndExpand" Margin="5" Aspect="AspectFit">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ChangeOrderDirection}"/>
+                </Image.GestureRecognizers>
+            </Image>
+            <Label Text="Filter by: " VerticalOptions="CenterAndExpand" Font="16" FontAttributes="Bold"/>
+            <Picker x:Name="FilterBy" Title="Brand" ItemsSource="{Binding FilterByOptions}" SelectedItem="{Binding SelectedFilter}"  />
         </StackLayout>
 
-    </ContentPage.Content>
+        <!--List View-->
+        <StackLayout>
+            <widgets:CommandListView x:Name="ProductsList" SeparatorVisibility="Default" ItemsSource="{Binding ProductsToShow}" SelectionMode="Single" RowHeight="100" HasUnevenRows="True" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Command="{Binding VisitGuitarModel}" SelectedItem="{Binding ModelSelected}">
+                <widgets:CommandListView.ItemTemplate>
+                    <DataTemplate>
+                        <!--<ViewCell>-->
+                        <cells:GeneralProductCell />
+                        <!--</ViewCell>-->
+                    </DataTemplate>
+                </widgets:CommandListView.ItemTemplate>
+            </widgets:CommandListView>
+        </StackLayout>
+
+        <!--<StackLayout Margin="10,50"> -->
+        <!--<Picker x:Name="BrandPicker" Title="Select a Brand" ItemDisplayBinding="{Binding BrandName}" ItemsSource="{Binding BrandsToShow}" SelectedItem="{Binding BrandSelected}" HorizontalOptions="FillAndExpand" />
+            <Picker x:Name="ModelPicker" Title="Select a Model" IsVisible="{Binding Visible}" ItemDisplayBinding="{Binding ModelName}" ItemsSource="{Binding BrandSelected.Models}" SelectedItem="{Binding ModelSelected}" HorizontalOptions="FillAndExpand" />
+            <Button Text="See this guitar" Command="{Binding NextPage}" Margin="100,0"/>-->
+        <!--</StackLayout>-->
+
+    </StackLayout>
+
 </ContentPage>

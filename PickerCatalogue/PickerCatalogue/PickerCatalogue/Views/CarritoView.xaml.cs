@@ -15,11 +15,11 @@ namespace PickerCatalogue.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class CarritoView : ContentPage
 	{
-		public CarritoView (INavigation _navigation, ObservableCollection<GuitarModel> _carritoModels)
+		public CarritoView (ObservableCollection<GuitarModel> carrito)
 		{
-            BindingContext = new CarritoViewModel(_navigation, _carritoModels);
-
             InitializeComponent();
+
+            BindingContext = new CarritoViewModel(Navigation, carrito);
         }
     }
 }

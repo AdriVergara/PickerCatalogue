@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using Xamarin.Forms;
 
 namespace PickerCatalogue.Models
 {
@@ -12,9 +13,13 @@ namespace PickerCatalogue.Models
         //public string ImagePath { get; set; }
 
         public string BrandName { get; set; }
+        public string BrandImage { get; set; }
         public string ModelName { get; set; }
         public ObservableCollection<GuitarImage> ImagesCollection { get; set; }
+        public double Rating { get; set; }
         public double Price { get; set; }
         public int Stock { get; set; }
+
+        
     }
 }
