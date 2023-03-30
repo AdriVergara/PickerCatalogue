@@ -7,7 +7,7 @@ Catalogue of guitars where you can filter by brand, price, rating... and select 
 You can see various pictures of the model selected swiping right or left (Carousel View) and if you add a model to the cart, you can see the models added on a listView.
 
 
-<img src="https://user-images.githubusercontent.com/26234592/228909832-65179232-59fa-4610-9988-3fb7c9f76158.jpg" width=50% height=50%>
+<img src="https://user-images.githubusercontent.com/26234592/228909832-65179232-59fa-4610-9988-3fb7c9f76158.jpg" width=40% height=40% margin-left=auto margin-right=auto display=block>
 
 
 
