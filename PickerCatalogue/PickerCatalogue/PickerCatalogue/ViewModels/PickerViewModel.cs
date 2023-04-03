@@ -11,6 +11,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using PickerCatalogue.Services;
 using System.Linq;
+using PickerCatalogue.LocalDB;
 
 namespace PickerCatalogue.ViewModels
 {
@@ -156,6 +157,10 @@ namespace PickerCatalogue.ViewModels
         private INavigation _navigationService { get; set; }
 
         private readonly IBrandsService _brandsService;
+        private DatabaseHandler _databaseHandlerService { get; set; }
+
+
+        private readonly Task loadFromDatabase;
 
         public PickerViewModel(INavigation navigation, ObservableCollection<GuitarModel> carrito)
         {
@@ -176,6 +181,10 @@ namespace PickerCatalogue.ViewModels
             //SelectedFilter = "Brand";
             //Visible = "False";
 
+
+            _databaseHandlerService = new DatabaseHandler();
+            /*loadFromDatabase = */ LoadFromDatabase();
+
             _brandsService = new BrandsService();
             BrandsToShow = new ObservableCollection<Brand>();
             ProductsToShow = new ObservableCollection<GuitarModel>();
@@ -190,6 +199,15 @@ namespace PickerCatalogue.ViewModels
             //NextPageParam = new Command(async (Param) => await ExecuteNextPage(Param));
             GoToCarrito = new Command(async () => await ExecuteGoToCarrito());
             ChangeOrderDirection = new Command(async () => await ExecuteChangeOrderDirection());
+        }
+
+        private void LoadFromDatabase()
+        {
+            List<Brand2> Brands = _databaseHandlerService.GetBrands();
+            List<GuitarModel2> Models = _databaseHandlerService.GetModels();
+
+            Console.WriteLine(Brands);
+            Console.WriteLine(Models);
         }
 
         private async Task ExecuteChangeOrderDirection()
@@ -335,7 +353,7 @@ namespace PickerCatalogue.ViewModels
 
         private void InitializeBrandsAndModels()
         {
-            BrandsToShow = _brandsService.GetBrands();  
+            BrandsToShow = _brandsService.GetBrands();
         }
     }
 }
